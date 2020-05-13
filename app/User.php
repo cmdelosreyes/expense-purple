@@ -51,4 +51,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Role::class, 'id', 'role_id');
     }
+
+    public function User()
+    {
+        return $this->hasOne(Expense::class, 'id', 'user_id');
+    }
 }

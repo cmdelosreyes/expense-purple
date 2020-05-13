@@ -219,14 +219,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <ul class="nav nav-treeview">
                 @can('is-admin')
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('category') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Expense Categories</p>
                 </a>
               </li>
                 @endcan
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('expense') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Expenses</p>
                 </a>
@@ -244,7 +244,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-        <div class="container-fluid" style="padding-top: 15px; ">
+        @yield('header')
+        <div class="container-fluid" style="padding: 0 20px 0 20px">
             @if (Session::has('message'))
             @if (Session::get('status'))
             <div class="alert alert-success alert-dismissible">
@@ -273,7 +274,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </div>
             @endif
         </div>
-        @yield('header')
     <!-- /.content-header -->
 
     <!-- Main content -->

@@ -15,6 +15,8 @@ class UserController extends Controller
     {
         // Add Middleware for Authentication
         $this->middleware('auth');
+        // Use Policy as Middleware for Administrator Privilege
+        $this->middleware('can:is-admin');
     }
 
     public function index()

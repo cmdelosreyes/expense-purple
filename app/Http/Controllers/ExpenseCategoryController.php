@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\ExpenseCategory;
 use Illuminate\Http\Request;
-use App\Role;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
-class RoleController extends Controller
+class ExpenseCategoryController extends Controller
 {
     public function __construct()
     {
-        // Add Middleware for Authentication
         $this->middleware('auth');
         // Use Policy as Middleware for Administrator Privilege
         $this->middleware('can:is-admin');
@@ -19,17 +18,17 @@ class RoleController extends Controller
 
     public function index()
     {
-        $roles = Role::all();
+        $categories = ExpenseCategory::all();
 
         $context = [
-            'roles' => $roles
+            'categories' => $categories
         ];
 
-        return view('roles.index')->with($context);
+        return view('category.index')->with($context);
     }
 
     /**
-     * Return a JSON for Role Model.
+     * Return a JSON for ExpenseCategory Model.
      * Method: POST
      *
      * @param Illuminate\Http\Request
@@ -38,13 +37,13 @@ class RoleController extends Controller
      */
     public function api(Request $request)
     {
-        $role = Role::findOrFail($request->id);
+        $role = ExpenseCategory::findOrFail($request->id);
 
         return response()->json($role);
     }
 
     /**
-     * Add Role Model and Return an array of values (Status : boolean, Message : string).
+     * Add ExpenseCategory Model and Return an array of values (Status : boolean, Message : string).
      * Method: POST
      *
      * @param Illuminate\Http\Request
@@ -55,34 +54,34 @@ class RoleController extends Controller
     {
         // Validate Request
         $request->validate([
-            'name' => ['required', Rule::unique('roles')],
+            'name' => ['required', Rule::unique('expense_categories')],
             'description' => ['required']
         ]);
 
         DB::beginTransaction();
 
-        $role = Role::create([
+        $category = ExpenseCategory::create([
             'name' => $request->name,
             'description' => $request->description
         ]);
 
-        if ($role->save()) {
+        if ($category->save()) {
             DB::commit();
             return redirect()->back()->with([
                 'status' => true,
-                'message' => 'Role has been added!'
+                'message' => 'Category has been added!'
             ]);
         } else {
             DB::rollback();
             return redirect()->back()->with([
                 'status' => false,
-                'message' => 'Failed to add role!'
+                'message' => 'Failed to add category!'
             ]);
         }
     }
 
     /**
-     * Update Role Model and Return an array of values (Status : boolean, Message : string).
+     * Update ExpenseCategory Model and Return an array of values (Status : boolean, Message : string).
      * Method: PATCH
      *
      * @param Illuminate\Http\Request
@@ -91,44 +90,36 @@ class RoleController extends Controller
      */
     public function update(Request $request)
     {
-        $role = Role::findOrFail($request->id);
+        $category = ExpenseCategory::findOrFail($request->id);
 
         // Validate Request
         $request->validate([
-            'name' => ['required', Rule::unique('roles')->ignore($role->id)],
+            'name' => ['required', Rule::unique('expense_categories')->ignore($category->id)],
             'description' => ['required']
         ]);
 
-        // Add Condition for Administrator Role (Disable Update / Delete)
-        if ($role->name == "Administrator") {
-            return redirect()->back()->with([
-                'status' => false,
-                'message' => 'Cannot update ' . $role->name . ' Role!'
-            ]);
-        }
-
         DB::beginTransaction();
 
-        $role->name = $request->name;
-        $role->description = $request->description;
+        $category->name = $request->name;
+        $category->description = $request->description;
 
-        if ($role->save()) {
+        if ($category->save()) {
             DB::commit();
             return redirect()->back()->with([
                 'status' => true,
-                'message' => 'Role has been updated!'
+                'message' => 'Category has been updated!'
             ]);
         } else {
             DB::rollback();
             return redirect()->back()->with([
                 'status' => false,
-                'message' => 'Failed to update role!'
+                'message' => 'Failed to update category!'
             ]);
         }
     }
 
     /**
-     * Delete Role Model and Return an array of values (Status : boolean, Message : string).
+     * Delete ExpenseCategory Model and Return an array of values (Status : boolean, Message : string).
      * Method: PATCH
      *
      * @param Illuminate\Http\Request
@@ -137,30 +128,23 @@ class RoleController extends Controller
      */
     public function destroy(Request $request)
     {
-        $role = Role::findOrFail($request->id);
-
-        // Add Condition for Administrator Role (Disable Update / Delete)
-        if ($role->name == "Administrator") {
-            return redirect()->back()->with([
-                'status' => false,
-                'message' => 'Cannot delete ' . $role->name . ' Role!'
-            ]);
-        }
+        $category = ExpenseCategory::findOrFail($request->id);
 
         DB::beginTransaction();
 
-        if ($role->delete()) {
+        if ($category->delete()) {
             DB::commit();
             return redirect()->back()->with([
                 'status' => true,
-                'message' => 'Role has been deleted!'
+                'message' => 'Category has been deleted!'
             ]);
         } else {
             DB::rollback();
             return redirect()->back()->with([
                 'status' => true,
-                'message' => 'Failed to delete role!'
+                'message' => 'Failed to delete category!'
             ]);
         }
     }
+
 }

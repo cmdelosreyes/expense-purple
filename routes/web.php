@@ -57,3 +57,31 @@ Route::group(['prefix' => 'profile'], function() {
     Route::patch('/update', 'ProfileController@update')->name('profile.update');
 
 });
+
+/** Expense Category **/
+Route::group(['prefix' => 'category'], function() {
+
+    Route::get('/', 'ExpenseCategoryController@index')->name('category');
+
+    Route::post('/api', 'ExpenseCategoryController@api')->name('category.api');
+
+    Route::patch('/update', 'ExpenseCategoryController@update')->name('category.update');
+
+    Route::post('/store', 'ExpenseCategoryController@store')->name('category.add');
+
+    Route::delete('/delete', 'ExpenseCategoryController@destroy')->name('category.destroy');
+});
+
+/** Expense **/
+Route::group(['prefix' => 'expense'], function() {
+
+    Route::get('/', 'ExpenseController@index')->name('expense');
+
+    Route::post('/api', 'ExpenseController@api')->name('expense.api');
+
+    Route::patch('/update', 'ExpenseController@update')->name('expense.update');
+
+    Route::post('/store', 'ExpenseController@store')->name('expense.add');
+
+    Route::delete('/delete', 'ExpenseController@destroy')->name('expense.destroy');
+});
