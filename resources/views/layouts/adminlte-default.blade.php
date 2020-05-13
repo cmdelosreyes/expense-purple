@@ -137,7 +137,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
             class="fas fa-th-large"></i></a>
       </li> --}}
       <li class="nav-item">
-        <a class="nav-link" href="#"><i
+        <a href="#" class="nav-link" data-toggle="modal" data-target="#passwordModal"><i
+            class="fas fa-user-cog"></i> Change Password</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ route('logout') }}"><i
             class="fas fa-sign-out-alt"></i> Logout</a>
       </li>
     </ul>
@@ -213,12 +217,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </a>
             <ul class="nav nav-treeview">
+                @can('is-admin')
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Expense Categories</p>
                 </a>
               </li>
+                @endcan
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -238,9 +244,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-        @yield('header')
-
-        <div class="container-fluid">
+        <div class="container-fluid" style="padding-top: 15px; ">
             @if (Session::has('message'))
             @if (Session::get('status'))
             <div class="alert alert-success alert-dismissible">
@@ -269,13 +273,54 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </div>
             @endif
         </div>
-
+        @yield('header')
     <!-- /.content-header -->
 
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
         @yield('content')
+
+        <!-- Edit Modal -->
+        <div id="passwordModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <form method="POST" action='{{ route('profile.update') }}' class="modal-content">
+                    @csrf
+                    @method('PATCH')
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Password</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="id">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <label>New Password</label>
+                                    <input type="password" name="password" id="password" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <label>Confirm New Password</label>
+                                    <input type="password" name="confirm_password" id="confirm_password" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+        <!-- End Edit Modal -->
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>

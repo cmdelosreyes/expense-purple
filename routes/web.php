@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -46,5 +48,12 @@ Route::group(['prefix' => 'users'], function () {
     Route::post('/store', 'UserController@store')->name('users.add');
 
     Route::delete('/delete', 'UserController@destroy')->name('users.destroy');
+
+});
+
+/** Profile **/
+Route::group(['prefix' => 'profile'], function() {
+
+    Route::patch('/update', 'ProfileController@update')->name('profile.update');
 
 });
