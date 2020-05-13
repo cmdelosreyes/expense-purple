@@ -21,4 +21,5 @@ mix.js('resources/js/app.js', 'public/js')
     .copy('resources/js/adminlte-dt', 'public/js')
     .copy('resources/js/datepicker', 'public/js')
     .copy('resources/js/inputmask', 'public/js')
-    .copy('resources/js/moment', 'public/js');
+    .copy('resources/js/moment', 'public/js')
+    .copy('resources/js/chartjs', 'public/js');
