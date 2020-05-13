@@ -15,3 +15,5 @@ Modules named Roles and Expense Categories has a relationship with the User and 
 - PHP version: v7.4.2
 - Laravel Version: v7.10.3
 - Module Bundler: Laravel Mix
+
+<b>Please do migrate and seed</b>
